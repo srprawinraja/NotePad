@@ -1,13 +1,25 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
-import styles from "./homeStyle";
+import styles from "./HomeStyle";
 import ListNotes from "../components/ListNotesComponent";
-export default function Home() {
+import { useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from './Type'; 
+
+
+
+// 2. Create the native stack navigator typed with RootStackParamList
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+// 3. Home Screen props type
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+export default function HomeScreen({ navigation }: HomeScreenProps) {
+
   return (
     <View style={styles.containerView}>
       <View style={styles.topBarView}>
         <Text style={styles.titleText}>My notes</Text>
         <View style={styles.subbarView}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{navigation.navigate('Note')}}>
             <View style={styles.circleView}>
               <Image
                 source={{
