@@ -3,7 +3,7 @@ export default StyleSheet.create({
   containerView: {
     flex: 1,
     backgroundColor: "#f2f2f2",
-    padding: 25,
+    padding: 10,
     borderColor: "#a1abc0",
     paddingTop: 100,
   },
@@ -30,18 +30,19 @@ export default StyleSheet.create({
   },
   searchBarView: {
     width: "100%",
-    padding: 15,
+    padding: 10,
     marginTop: 50,
     borderRadius: 50,
     backgroundColor: "white",
     flexDirection: "row",
     alignItems: "center",
+    marginBottom:10
   },
   searchText: {
     fontSize: 20,
-    color: "#12a0bb",
     marginLeft: 20,
     fontStyle: "italic",
+    flex:1
   },
   plusIcon: {
     width: 30,
