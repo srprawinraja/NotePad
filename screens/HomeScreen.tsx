@@ -1,25 +1,69 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  FlatList,
+  TextInput,
+} from "react-native";
 import styles from "./HomeStyle";
-import ListNotes from "../components/ListNotesComponent";
-import { useNavigation } from "@react-navigation/native";
-import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from './Type'; 
+import ListNotes from "../components/ListNoteComponent";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList, ScreenProps } from "./Type";
+import { ListNoteProps } from "./Type";
+import { useEffect, useState } from "react";
+export default function HomeScreen({ navigation }: ScreenProps) {
+  const allNotes: ListNoteProps[] = [
+    {
+      id: "0",
+      date: "29.11.2002",
+      heading: "Toughest Men Prawin",
+      content:
+        "Iam stronger than any in the world. you may be smarter than me, cooler than me, stronger than me if we get down on treadmill any one of things gonna happen IAM GONNA DIE OR YOU GONNA GET OFF THE TREADMILLS",
+    },
+    {
+      id: "1",
+      date: "29.11.2002",
+      heading: "Toughest Men thanos",
+      content:
+        "Iam stronger than any in the world. you may be smarter than me, cooler than me, stronger than me if we get down on treadmill any one of things gonna happen IAM GONNA DIE OR YOU GONNA GET OFF THE TREADMILLS",
+    },
+    {
+      id: "2",
+      date: "29.11.2002",
+      heading: "Toughest Men deadpool",
+      content:
+        "Iam stronger than any in the world. you may be smarter than me, cooler than me, stronger than me if we get down on treadmill any one of things gonna happen IAM GONNA DIE OR YOU GONNA GET OFF THE TREADMILLS",
+    },
+  ];
 
+  const [searchText, setSearchText] = useState<string>("");
 
+  const [filteredNotes, setFilteredNotes] = useState<ListNoteProps[]>([]);
 
-// 2. Create the native stack navigator typed with RootStackParamList
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
-// 3. Home Screen props type
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
-export default function HomeScreen({ navigation }: HomeScreenProps) {
-
+  useEffect(() => {
+    if (searchText === "") {
+      setFilteredNotes(allNotes);
+    } else {
+      const filtered = allNotes.filter(
+        (note) =>
+          note.heading.toLowerCase().includes(searchText.toLowerCase()) ||
+          note.content.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredNotes(filtered);
+    }
+  }, [searchText]);
   return (
     <View style={styles.containerView}>
       <View style={styles.topBarView}>
         <Text style={styles.titleText}>My notes</Text>
         <View style={styles.subbarView}>
-          <TouchableOpacity onPress={()=>{navigation.navigate('Note')}}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Note");
+            }}
+          >
             <View style={styles.circleView}>
               <Image
                 source={{
@@ -48,14 +92,22 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           }}
           style={styles.searchIcon}
         />
-        <Text style={styles.searchText}>Search</Text>
+        <TextInput
+          style={styles.searchText}
+          onChangeText={setSearchText}
+          placeholderTextColor={"#12a0bb"}
+          placeholder="Search"
+          allowFontScaling
+        >
+          {searchText}
+        </TextInput>
       </TouchableOpacity>
-      <ListNotes
-        date="29.11.2002"
-        heading="Toughest Men Prawin"
-        content="Iam stronger than any in the world. you may be smarter than me, cooler than me, 
-               stronger than me if we get down on treadmill any one of things gonna happen IAM GONNA DIE OR 
-               YOU GONNA GET OFF THE TREADMILLS"
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        data={filteredNotes}
+        renderItem={({ item }) => <ListNotes {...item} />}
+        keyExtractor={(item) => item.id}
       />
     </View>
   );
