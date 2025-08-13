@@ -106,7 +106,7 @@ export default function HomeScreen({ navigation }: ScreenProps) {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         data={filteredNotes}
-        renderItem={({ item }) => <ListNotes {...item} />}
+        renderItem={({ item }) => <ListNotes id={item.id} date={item.date} content={item.content} heading={item.heading} searchText={searchText} />}
         keyExtractor={(item) => item.id}
       />
     </View>

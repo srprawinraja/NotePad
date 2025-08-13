@@ -20,4 +20,8 @@ export default StyleSheet.create({
   notesContentText: {
     fontSize: 15,
   },
+  hightlightNotesContentText: {
+    fontSize: 15,
+    backgroundColor:'#FFF59D'
+  }
 });
